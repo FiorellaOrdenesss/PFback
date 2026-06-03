@@ -1,4 +1,4 @@
-// Esta es la rama fio, fio es la mejor
+// Hola yuli todo listo para empezar!
 require("dotenv").config();
 const express = require("express");
 const sequelize = require("./config/db");
