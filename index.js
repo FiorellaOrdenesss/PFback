@@ -1,1 +1,2 @@
-//CUIDADO ESTO ES MAIN!!!! NO TOCAR// Esta es la rama fio, fio es la mejor
+
+// Hola Yuli! Todo listo para empezar!
