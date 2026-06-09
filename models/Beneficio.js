@@ -25,8 +25,5 @@ const Beneficio = sequelize.define("Beneficio", {
     timestamps: true,
 });
 
-// Relación con Categoría
-Beneficio.belongsTo(Categoria, { foreignKey: "categoriaId" });
-Categoria.hasMany(Beneficio, { foreignKey: "categoriaId" });
 
 module.exports = Beneficio;

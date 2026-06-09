@@ -29,8 +29,6 @@ const Actividad = sequelize.define("Actividad", {
     timestamps: true,
 });
 
-// Relación con Beneficio
-Actividad.belongsTo(Beneficio, { foreignKey: "beneficioId" });
-Beneficio.hasMany(Actividad, { foreignKey: "beneficioId" });
+
 
 module.exports = Actividad;
