@@ -18,6 +18,10 @@ const Categoria = sequelize.define("Categoria", {
     },
 }, {
     timestamps: true,
-});
+},
+    {
+        tableName: "categorias",
+        timestamps: true,
+    });
 
 module.exports = Categoria;

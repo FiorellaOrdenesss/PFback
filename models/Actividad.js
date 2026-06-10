@@ -30,5 +30,5 @@ const Actividad = sequelize.define("Actividad", {
 });
 
 
-
 module.exports = Actividad;
+
