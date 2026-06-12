@@ -1,4 +1,4 @@
-const { Benficio } = require("../models/index")
+const { Beneficio } = require("../models/index")
 const beneficios = [];
 
 beneficios.push(
