@@ -3,6 +3,7 @@ const Usuario = require("./Usuario");
 const Actividad = require("./Actividad");
 const Beneficio = require("./Beneficio");
 const Categoria = require("./Categoria");
+const Producto = require("./Producto");
 
 Beneficio.belongsTo(Categoria, { foreignKey: "categoriaId" });
 Categoria.hasMany(Beneficio, { foreignKey: "categoriaId" });
@@ -21,4 +22,5 @@ module.exports = {
     Actividad,
     Beneficio,
     Categoria,
+    Producto,
 };
