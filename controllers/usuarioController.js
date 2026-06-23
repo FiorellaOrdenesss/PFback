@@ -40,6 +40,41 @@ exports.register = async (req, res) => {
         res.status(500).json({ message: "Error al registrar usuario", error: error.message });
     }
 };
+exports.registerAdmin = async (req, res) => {
+    try {
+        const { nombre, email, password } = req.body;
+
+        if (!nombre || !email || !password) {
+            return res.status(400).json({ message: "Todos los campos son obligatorios" });
+        }
+
+        const usuarioExistente = await Usuario.findOne({ where: { email } });
+        if (usuarioExistente) {
+            return res.status(400).json({ message: "El email ya está registrado" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const nuevoAdmin = await Usuario.create({
+            nombre,
+            email,
+            password: hashedPassword,
+            rol: "admin",
+        });
+
+        res.status(201).json({
+            message: "Admin registrado correctamente",
+            usuario: {
+                id: nuevoAdmin.id,
+                nombre: nuevoAdmin.nombre,
+                email: nuevoAdmin.email,
+                rol: nuevoAdmin.rol,
+            },
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Error al registrar admin", error: error.message });
+    }
+};
 
 // Login de usuario
 exports.login = async (req, res) => {
