@@ -7,7 +7,7 @@ const seedActividades = require("./seederActividad");
 const seedUsuarios = require("./seederUsuario");
 const seedProductos = require("./seederProducto");
 
-async function seedAll() {
+async function seedAll({ keepConnectionOpen = false } = {}) {
     try {
         await sequelize.sync({ force: false });
         console.log("Base de datos lista para sembrar");
@@ -21,10 +21,19 @@ async function seedAll() {
         console.log("Base de datos sembrada correctamente");
     } catch (error) {
         console.error("Error al sembrar la base de datos", error);
-        process.exit(1);
+        throw error;
     } finally {
-        await sequelize.close();
+        if (!keepConnectionOpen) {
+            await sequelize.close();
+        }
     }
 }
 
-seedAll();
+if (require.main === module) {
+    seedAll().catch((error) => {
+        console.error("Error al ejecutar el seeder", error);
+        process.exit(1);
+    });
+}
+
+module.exports = { seedAll };

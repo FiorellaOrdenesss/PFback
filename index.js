@@ -16,19 +16,27 @@ const usuarioRoutes = require("./routes/usuarioRoutes");
 const actividadRoutes = require("./routes/actividadRoutes");
 const beneficioRoutes = require("./routes/beneficioRoutes");
 const categoriaRoutes = require("./routes/categoriaRoutes");
-const productoRoutes = require("./routes/productoRoutes")
+const productoRoutes = require("./routes/productoRoutes");
+const { seedAll } = require("./seeders/seed");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/img", express.static(path.join(__dirname, "seeders", "img")));
-
-sequelize.sync({ alter: true }).then(() => console.log("Base de datos sincronizada"));
+app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/actividades", actividadRoutes);
 app.use("/api/beneficios", beneficioRoutes);
 app.use("/api/categorias", categoriaRoutes);
-app.use("/api/producto", productoRoutes)
+app.use("/api/producto", productoRoutes);
 
-app.listen(8000, () => console.log("Servidor corriendo en http://localhost:8000"));
+sequelize.sync({ alter: true })
+    .then(async () => {
+        console.log("Base de datos sincronizada");
+        await seedAll({ keepConnectionOpen: true });
+        app.listen(8000, () => console.log("Servidor corriendo en http://localhost:8000"));
+    })
+    .catch((error) => {
+        console.error("Error al iniciar la base de datos", error);
+    });
