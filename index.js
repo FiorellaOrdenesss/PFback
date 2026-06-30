@@ -6,6 +6,7 @@
 //cd "c:\Users\Fiorella Ordenes\Desktop\Repositorios\entregables\Proyecto_Final\PFback" ; node -e "require('./seeders/seed');"
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
 const sequelize = require("./config/db");
 const cors = require("cors");
 
@@ -20,8 +21,9 @@ const productoRoutes = require("./routes/productoRoutes")
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use("/img", express.static(path.join(__dirname, "seeders", "img")));
 
-sequelize.sync().then(() => console.log("Base de datos sincronizada"));
+sequelize.sync({ alter: true }).then(() => console.log("Base de datos sincronizada"));
 
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/actividades", actividadRoutes);

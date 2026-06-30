@@ -7,6 +7,7 @@ const actividades = [
         fecha: new Date("2026-06-20"),
         ubicacion: "Montevideo",
         beneficio: "Beca de Transporte",
+        imagen: "/img/turismo_accesible.png",
     },
     {
         nombre: "Workshop de programación",
@@ -14,6 +15,7 @@ const actividades = [
         fecha: new Date("2026-06-25"),
         ubicacion: "Canelones",
         beneficio: "Curso de Programación",
+        imagen: "/img/informatica_inclusiva.png",
     },
     {
         nombre: "Taller de CV",
@@ -21,6 +23,7 @@ const actividades = [
         fecha: new Date("2026-07-01"),
         ubicacion: "Montevideo",
         beneficio: "Taller de Inserción Laboral",
+        imagen: "/img/taller_inclusion_laboral.png",
     },
     {
         nombre: "Entrega de vales",
@@ -28,6 +31,7 @@ const actividades = [
         fecha: new Date("2026-07-05"),
         ubicacion: "Canelones",
         beneficio: "Beneficio Alimentario",
+        imagen: "/img/eventos_inclusivos.png",
     },
     {
         nombre: "Sesión de apoyo emocional",
@@ -35,6 +39,7 @@ const actividades = [
         fecha: new Date("2026-07-10"),
         ubicacion: "Montevideo",
         beneficio: "Atención Psicológica",
+        imagen: "/img/musicoterapia.png",
     },
     {
         nombre: "Feria de útiles escolares",
@@ -42,6 +47,7 @@ const actividades = [
         fecha: new Date("2026-07-15"),
         ubicacion: "Canelones",
         beneficio: "Descuento en Materiales",
+        imagen: "/img/teatro_inclusivo.png",
     },
     {
         nombre: "Presentación de biblioteca digital",
@@ -49,6 +55,7 @@ const actividades = [
         fecha: new Date("2026-07-20"),
         ubicacion: "Montevideo",
         beneficio: "Acceso a Biblioteca Digital",
+        imagen: "/img/lengua_senas_uruguaya.png",
     },
 ];
 

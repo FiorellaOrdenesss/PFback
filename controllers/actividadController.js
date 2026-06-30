@@ -2,13 +2,14 @@ const Actividad = require("../models/Actividad");
 
 exports.create = async (req, res) => {
     try {
-        const { nombre, descripcion, fecha, ubicacion, beneficioId } = req.body;
+        const { nombre, descripcion, fecha, ubicacion, beneficioId, imagen } = req.body;
         const nuevaActividad = await Actividad.create({
             nombre,
             descripcion,
             fecha,
             ubicacion,
             beneficioId,
+            imagen,
         });
         res.status(201).json(nuevaActividad);
     } catch (error) {
@@ -40,11 +41,12 @@ exports.update = async (req, res) => {
         const actividad = await Actividad.findByPk(req.params.id);
         if (!actividad) return res.status(404).json({ message: "Actividad no encontrada" });
 
-        const { nombre, descripcion, fecha, ubicacion } = req.body;
+        const { nombre, descripcion, fecha, ubicacion, imagen } = req.body;
         actividad.nombre = nombre || actividad.nombre;
         actividad.descripcion = descripcion || actividad.descripcion;
         actividad.fecha = fecha || actividad.fecha;
         actividad.ubicacion = ubicacion || actividad.ubicacion;
+        actividad.imagen = imagen || actividad.imagen;
 
         await actividad.save();
         res.json({ message: "Actividad actualizada correctamente", actividad });
