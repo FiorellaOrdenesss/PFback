@@ -1,4 +1,9 @@
 // index.js
+// Comando para correr seeder;
+// npm run seed
+//npm.cmd run seed
+//dejar también un seeder para asociar usuarios con beneficios y actividades.
+//cd "c:\Users\Fiorella Ordenes\Desktop\Repositorios\entregables\Proyecto_Final\PFback" ; node -e "require('./seeders/seed');"
 require("dotenv").config();
 const express = require("express");
 const sequelize = require("./config/db");

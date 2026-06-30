@@ -1,50 +1,56 @@
-const { Categoria } = require("../models/index");
+const { Categoria } = require("../models");
 
-const categorias = [];
-
-categorias.push(
+const categorias = [
     {
         nombre: "Transporte",
         descripcion: "Beneficios relacionados con movilidad urbana.",
-        createdAt: new Date(),
-        updatedAt: new Date(),
     },
     {
         nombre: "Educación",
         descripcion: "Cursos, talleres y capacitaciones.",
-        createdAt: new Date(),
-        updatedAt: new Date(),
     },
     {
         nombre: "Alimentación",
         descripcion: "Apoyo en vales y descuentos de comida.",
-        createdAt: new Date(),
-        updatedAt: new Date(),
     },
     {
         nombre: "Salud",
         descripcion: "Atención psicológica y médica.",
-        createdAt: new Date(),
-        updatedAt: new Date(),
     },
     {
         nombre: "Materiales",
         descripcion: "Descuentos en útiles escolares y libros.",
-        createdAt: new Date(),
-        updatedAt: new Date(),
     },
     {
         nombre: "Tecnología",
         descripcion: "Acceso a herramientas digitales y software.",
-        createdAt: new Date(),
-        updatedAt: new Date(),
     },
     {
         nombre: "Cultura",
         descripcion: "Actividades culturales y acceso a bibliotecas.",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    }
-);
+    },
+];
 
-Categoria.bulkCreate(categorias);
+async function seedCategorias() {
+    for (const categoria of categorias) {
+        const [registro, created] = await Categoria.findOrCreate({
+            where: { nombre: categoria.nombre },
+            defaults: categoria,
+        });
+
+        if (!created) {
+            await registro.update({ descripcion: categoria.descripcion });
+        }
+    }
+}
+
+module.exports = seedCategorias;
+
+if (require.main === module) {
+    seedCategorias()
+        .then(() => console.log("Categorías sembradas correctamente"))
+        .catch((error) => {
+            console.error("Error al sembrar categorías", error);
+            process.exit(1);
+        });
+}

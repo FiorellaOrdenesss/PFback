@@ -1,18 +1,44 @@
-// Los seeders en este archivo no estan encriptados, 
-// debido a como esta armado el seeder no se encriptan en la base de datos, 
-// por lo cual no deben ser usados fuera de mis pruebas, 
-// para crear un usuario encriptado desde back utilizar insomnia o postman
-const { Usuario } = require("../models/index")
-const usuarios = []
+const bcrypt = require("bcryptjs");
+const { Usuario } = require("../models");
 
-usuarios.push(
-    { nombre: "nacho", email: "nachito@exemple", password: "123456", rol: "user" },
-    { nombre: "pepe", email: "pepe@exemple", password: "123456", rol: "user" },
-    { nombre: "chola", email: "chola@exemple", password: "123456", rol: "user" },
-    { nombre: "peca", email: "peca@exemple", password: "123456", rol: "user" },
-    { nombre: "yuli", email: "yuli@exemple", password: "123456", rol: "user" },
-    { nombre: "fio", email: "fio@exemple", password: "123456", rol: "user" }
-)
+const usuarios = [
+    { nombre: "Admin", email: "admin@ejemplo.com", password: "Admin123!", rol: "admin" },
+    { nombre: "Nacho", email: "nachito@ejemplo.com", password: "123456", rol: "user" },
+    { nombre: "Pepe", email: "pepe@ejemplo.com", password: "123456", rol: "user" },
+    { nombre: "Chola", email: "chola@ejemplo.com", password: "123456", rol: "user" },
+    { nombre: "Peca", email: "peca@ejemplo.com", password: "123456", rol: "user" },
+    { nombre: "Yuli", email: "yuli@ejemplo.com", password: "123456", rol: "user" },
+    { nombre: "Fio", email: "fio@ejemplo.com", password: "123456", rol: "user" },
+];
 
+async function seedUsuarios() {
+    for (const usuario of usuarios) {
+        const passwordHash = await bcrypt.hash(usuario.password, 10);
+        const [registro, created] = await Usuario.findOrCreate({
+            where: { email: usuario.email },
+            defaults: {
+                ...usuario,
+                password: passwordHash,
+            },
+        });
 
-Usuario.bulkCreate(usuarios)
+        if (!created) {
+            await registro.update({
+                nombre: usuario.nombre,
+                rol: usuario.rol,
+                password: passwordHash,
+            });
+        }
+    }
+}
+
+module.exports = seedUsuarios;
+
+if (require.main === module) {
+    seedUsuarios()
+        .then(() => console.log("Usuarios sembrados correctamente"))
+        .catch((error) => {
+            console.error("Error al sembrar usuarios", error);
+            process.exit(1);
+        });
+}
