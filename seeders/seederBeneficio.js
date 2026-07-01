@@ -1,83 +1,124 @@
 const { Categoria, Beneficio } = require("../models");
 
 const beneficios = [
-    {
-        titulo: "Beca de Transporte",
-        descripcion: "Apoyo económico para cubrir gastos de movilidad urbana.",
-        disponibilidad: true,
-        categoria: "Transporte",
-    },
-    {
-        titulo: "Curso de Programación",
-        descripcion: "Capacitación inicial en desarrollo web con HTML, CSS y JavaScript.",
-        disponibilidad: true,
-        categoria: "Tecnología",
-    },
-    {
-        titulo: "Taller de Inserción Laboral",
-        descripcion: "Orientación para entrevistas, armado de CV y búsqueda de empleo.",
-        disponibilidad: true,
-        categoria: "Educación",
-    },
-    {
-        titulo: "Beneficio Alimentario",
-        descripcion: "Acceso a vales de alimentación para estudiantes en situación vulnerable.",
-        disponibilidad: true,
-        categoria: "Alimentación",
-    },
-    {
-        titulo: "Atención Psicológica",
-        descripcion: "Sesiones gratuitas de apoyo emocional y orientación psicológica.",
-        disponibilidad: true,
-        categoria: "Salud",
-    },
-    {
-        titulo: "Descuento en Materiales",
-        descripcion: "Reducción de costos en la compra de libros y útiles escolares.",
-        disponibilidad: true,
-        categoria: "Materiales",
-    },
-    {
-        titulo: "Acceso a Biblioteca Digital",
-        descripcion: "Plataforma online con recursos académicos y material de estudio.",
-        disponibilidad: true,
-        categoria: "Cultura",
-    },
+  {
+    titulo: "Pensión por Invalidez",
+    descripcion:
+      "Prestación económica destinada a personas con discapacidad que cumplen con los requisitos establecidos por el BPS.",
+    disponibilidad: true,
+    categoria: "Salud",
+    imagen: "/beneficios/pension_invalidez.png",
+    link: "https://www.bps.gub.uy",
+  },
+  {
+    titulo: "Credencial de Discapacidad",
+    descripcion:
+      "Documento que permite acceder a diversos beneficios y programas destinados a personas con discapacidad.",
+    disponibilidad: true,
+    categoria: "Salud",
+    imagen: "/beneficios/credencial_discapacidad.png",
+    link: "https://www.gub.uy",
+  },
+  {
+    titulo: "Ayudas Técnicas",
+    descripcion:
+      "Acceso a sillas de ruedas, bastones, audífonos y otros elementos de apoyo para mejorar la autonomía.",
+    disponibilidad: true,
+    categoria: "Salud",
+    imagen: "/beneficios/ayudas_tecnicas.png",
+    link: "https://www.gub.uy",
+  },
+  {
+    titulo: "Transporte Accesible",
+    descripcion:
+      "Programas y beneficios destinados a facilitar el traslado de personas con discapacidad.",
+    disponibilidad: true,
+    categoria: "Transporte",
+    imagen: "/beneficios/transporte_accesible.png",
+    link: "https://www.gub.uy",
+  },
+  {
+    titulo: "Inserción Laboral Inclusiva",
+    descripcion:
+      "Programas de capacitación y oportunidades laborales para personas con discapacidad.",
+    disponibilidad: true,
+    categoria: "Educación",
+    imagen: "/beneficios/insercion_laboral.png",
+    link: "https://www.gub.uy",
+  },
+  {
+    titulo: "Educación Inclusiva",
+    descripcion:
+      "Apoyos educativos, becas y recursos para garantizar una educación accesible e inclusiva.",
+    disponibilidad: true,
+    categoria: "Educación",
+    imagen: "/beneficios/educacion_inclusiva.png",
+    link: "https://www.gub.uy",
+  },
+  {
+    titulo: "Beneficios en Salud",
+    descripcion:
+      "Acceso a rehabilitación, tratamientos especializados y servicios de apoyo en salud.",
+    disponibilidad: true,
+    categoria: "Salud",
+    imagen: "/beneficios/beneficios_salud.png",
+    link: "https://www.gub.uy",
+  },
+  {
+    titulo: "Descuentos y Beneficios Comerciales",
+    descripcion:
+      "Descuentos especiales en comercios, farmacias, actividades recreativas y servicios adheridos.",
+    disponibilidad: true,
+    categoria: "Materiales",
+    imagen: "/beneficios/descuentos_comerciales.png",
+    link: "https://www.gub.uy",
+  },
 ];
 
 async function seedBeneficios() {
-    const categorias = await Categoria.findAll();
-    const categoriaPorNombre = Object.fromEntries(categorias.map((categoria) => [categoria.nombre, categoria.id]));
+  const categorias = await Categoria.findAll();
 
-    for (const beneficio of beneficios) {
-        const { categoria, ...datosBeneficio } = beneficio;
-        const categoriaId = categoriaPorNombre[categoria];
+  const categoriaPorNombre = Object.fromEntries(
+    categorias.map((categoria) => [categoria.nombre, categoria.id])
+  );
 
-        const [registro, created] = await Beneficio.findOrCreate({
-            where: { titulo: beneficio.titulo },
-            defaults: {
-                ...datosBeneficio,
-                categoriaId,
-            },
-        });
+  for (const beneficio of beneficios) {
+    const { categoria, ...datosBeneficio } = beneficio;
 
-        if (!created) {
-            await registro.update({
-                descripcion: datosBeneficio.descripcion,
-                disponibilidad: datosBeneficio.disponibilidad,
-                categoriaId,
-            });
-        }
+    const categoriaId = categoriaPorNombre[categoria];
+
+    const [registro, created] = await Beneficio.findOrCreate({
+      where: {
+        titulo: beneficio.titulo,
+      },
+      defaults: {
+        ...datosBeneficio,
+        categoriaId,
+      },
+    });
+
+    if (!created) {
+      await registro.update({
+        titulo: datosBeneficio.titulo,
+        descripcion: datosBeneficio.descripcion,
+        disponibilidad: datosBeneficio.disponibilidad,
+        imagen: datosBeneficio.imagen,
+        link: datosBeneficio.link,
+        categoriaId,
+      });
     }
+  }
+
+  console.log("✅ Beneficios sembrados correctamente.");
 }
 
 module.exports = seedBeneficios;
 
 if (require.main === module) {
-    seedBeneficios()
-        .then(() => console.log("Beneficios sembrados correctamente"))
-        .catch((error) => {
-            console.error("Error al sembrar beneficios", error);
-            process.exit(1);
-        });
+  seedBeneficios()
+    .then(() => process.exit(0))
+    .catch((error) => {
+      console.error("❌ Error al sembrar beneficios:", error);
+      process.exit(1);
+    });
 }
